@@ -2,9 +2,22 @@ const fs = require('fs')
 const bodyParser = require('body-parser')
 const jsonServer = require('json-server')
 const jwt = require('jsonwebtoken')
+const clone = require('clone')
+const data = require('./user.json')
 
+const isProductionEnv = process.env.NODE_ENV === 'production';
 const server = jsonServer.create()
 let userdb = JSON.parse(fs.readFileSync('./users.json', 'UTF-8'))
+
+const middlewares = jsonServer.defaults()
+
+server.use(middlewares)
+
+server.use((req, res, next) => {
+    if (req.path !== '/')
+        router.user.setState(clone(data))
+    next()
+})
 
 server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json())
@@ -171,6 +184,10 @@ server.post('/auth/favorites', VerifyTokenMiddleware, (req, res) => {
   res.status(200).json({ status: 200, message: "News added to favorites" });
 });
 
+server.user(router)
 server.listen(9000, () => {
   console.log('Auth Server is Running on Port 9000...');
 })
+
+
+module.exports = server

@@ -9,6 +9,10 @@ const isProductionEnv = process.env.NODE_ENV === 'production';
 const server = jsonServer.create()
 let userdb = JSON.parse(fs.readFileSync('./users.json', 'UTF-8'))
 
+const router = jsonServer.router(isProductionEnv ? clone(data) : 'users.json', {
+    _isFake: isProductionEnv
+})
+
 const middlewares = jsonServer.defaults()
 
 server.use(middlewares)

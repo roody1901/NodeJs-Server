@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const jsonServer = require('json-server')
 const jwt = require('jsonwebtoken')
 const clone = require('clone')
-const data = require('./user.json')
+const data = require('./users.json')
 
 const isProductionEnv = process.env.NODE_ENV === 'production';
 const server = jsonServer.create()
